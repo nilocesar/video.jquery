@@ -1,8 +1,7 @@
 # video.jquery
 Criação de um Jquery com o controle de videos - local,  streaming, api youtube, api vimeo 
 
-
-$("#player").video_jquery({
+       $("#player").video_jquery({
                     control: "default", // default, youtube, vimeo
                     width: 800,
                     heigth: 600,
