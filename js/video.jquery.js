@@ -2255,6 +2255,7 @@ mejs.version = "2.18.2", mejs.meIndex = 0, mejs.plugins = {
 
         function canplay() {
             /*if (private.settings.autoplay && !autoPlayInit) {
+                alert("Entrou!");
                 autoPlayInit = true;
                 myPlayer.play();
             }*/
@@ -2265,21 +2266,27 @@ mejs.version = "2.18.2", mejs.meIndex = 0, mejs.plugins = {
             private.settings.timeTotal = Math.round(myPlayer.duration);
             private.settings.timeCurrent = Math.round(myPlayer.currentTime);
             private.settings.paused = myPlayer.paused;
-            public.timeProgress();
 
-            if (myPlayer.paused && !pauseStatus) {
-                public.paused();
-                pauseStatus = true;
-            } else {
-                pauseStatus = false;
+            if (private.settings.timeTotal > 0 && private.settings.timeCurrent > 0) {
+                public.timeProgress();
+
+                if (myPlayer.paused && !pauseStatus) {
+                    public.paused();
+                    pauseStatus = true;
+                } else {
+                    pauseStatus = false;
+                }
+
             }
-
         }
 
         function ended() {
             private.settings.timeTotal = Math.round(myPlayer.duration);
             private.settings.timeCurrent = Math.round(myPlayer.currentTime);
-            public.timeFinish();
+            
+            if (private.settings.timeTotal > 0 && private.settings.timeCurrent > 0) {
+                public.timeFinish();
+            }
         }
 
         ///
@@ -2371,7 +2378,11 @@ mejs.version = "2.18.2", mejs.meIndex = 0, mejs.plugins = {
                     private.settings.timeCurrent = player.getCurrentTime();
                 }
                 if (private.settings.timeCurrent !== oldTime)
-                    public.timeProgress();
+                {
+                    if(  private.settings.timeCurrent > 0 &&  private.settings.timeTotal > 0 )
+                        public.timeProgress();
+                }
+                    
             }
 
             window.setInterval(updateTime, 100);
@@ -2511,7 +2522,8 @@ mejs.version = "2.18.2", mejs.meIndex = 0, mejs.plugins = {
         function onPlayProgress(data) {
             private.settings.timeTotal = data.duration;
             private.settings.timeCurrent = data.seconds;
-            public.timeProgress();
+            if(  private.settings.timeCurrent > 0 &&  private.settings.timeTotal > 0 )
+                public.timeProgress();
         }
 
         function seekTo() {
